@@ -1,6 +1,7 @@
 {
   "name": "6_blog",
   "version": "1.0.0",
+  "type":"module",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +10,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "dotenv": "^18.0.8",
