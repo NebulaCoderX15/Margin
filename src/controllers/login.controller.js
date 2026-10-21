@@ -12,7 +12,7 @@ async function login(req, res) {
 
     try {
         const user = await User.findOne({
-            $and: [
+            $or: [
                 { username },
                 { email }
             ]
