@@ -1,5 +1,6 @@
 import User from '../models/auth.model.js'
 import bcrypt from 'bcrypt'
+import jwt from    'jsonwebtoken'
 
 async function login(req, res) {
     const { username, email, password } = req.body;
@@ -31,6 +32,14 @@ async function login(req, res) {
                 message: 'Invalid credentials'
             });
         }
+
+          const token = jwt.sign({
+              id:user._id,
+              role:user.role
+        
+            },process.env.JWT_SECRET);
+        
+            res.cookie("token", token);
 
        
 
