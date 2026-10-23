@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import User from './auth.model'
+import User from './auth.model.js'
 
 
 const blog =  new mongoose.Schema({
