@@ -59,4 +59,36 @@ async function getblog(req,res){
     
 }
 
-export default {createblog,getallblog,getblog};
+async function updateblog(req,res){
+    try {
+        const blog = await Blog.findById(req.params.id);
+
+        if(blog.author.toString()!==req.user.id.toString()){
+             return res.status(401).json({
+                message:"Not authorised"
+             })
+        }
+
+        const update = await  Blog.findByIdAndUpdate(
+          req.params.id,
+         {   title:req.body.title,
+            content:req.body.content},
+            {
+    new: true,
+    runValidators: true
+}
+        );
+        res.status(201).json({
+            message:"updated",
+            blog :update
+        })
+
+
+    } catch (error) {
+        res.status(404).json({
+            error: error
+        })
+    }
+}
+
+export default {createblog,getallblog,getblog,updateblog};

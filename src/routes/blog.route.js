@@ -9,6 +9,7 @@ const router3= express.Router();
 router3.post('/create',authMiddleware,blogcontroller.createblog);
 router3.get('/getall',blogcontroller.getallblog);
 router3.get('/getblog/:id',blogcontroller.getblog);
+router3.patch('/updateblog/:id',authMiddleware,blogcontroller.updateblog);
 
 
 
