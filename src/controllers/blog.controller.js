@@ -36,4 +36,27 @@ async function getallblog(req,res)
     })
 }
 
-export default {createblog,getallblog};
+
+async function getblog(req,res){
+
+    try{ const blog = await Blog.findById(
+      req.params.id
+    )
+
+    
+    res.status(200).json({
+        message:"here are the blog",
+        blog:blog,});
+    }
+    catch(error){
+        return res.status(404).json({
+            error
+        })
+    }
+
+
+
+    
+}
+
+export default {createblog,getallblog,getblog};
