@@ -1,12 +1,12 @@
 import express from 'express'
-import createblog from '../controllers/blog.controller.js';
+import blogcontroller from '../controllers/blog.controller.js';
 import authMiddleware from '../middlewares/auth.middleware.js';
 
 
 const router3= express.Router();
 
 
-router3.post('/create',authMiddleware,createblog);
-
+router3.post('/create',authMiddleware,blogcontroller.createblog);
+router3.get('/getall',blogcontroller.getallblog);
 
 export default router3;

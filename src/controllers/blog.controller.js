@@ -1,3 +1,4 @@
+
 import Blog from '../models/blog.model.js'
 
 
@@ -24,6 +25,15 @@ async function createblog(req,res){
 
 }
 
+async function getallblog(req,res)
+{
 
+    const blog = await Blog.find();
 
-export default createblog;
+    res.status(200).json({
+        message:"here are the blogs",
+        blogs:blog
+    })
+}
+
+export default {createblog,getallblog};
