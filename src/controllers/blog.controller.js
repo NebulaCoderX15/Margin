@@ -62,6 +62,12 @@ async function getblog(req,res){
 async function updateblog(req,res){
     try {
         const blog = await Blog.findById(req.params.id);
+        
+        if(!blog){
+            return res.status(404).json({
+            message:"does not exist"       
+        })
+        }
 
         if(blog.author.toString()!==req.user.id.toString()){
              return res.status(401).json({
@@ -85,8 +91,9 @@ async function updateblog(req,res){
 
 
     } catch (error) {
+          console.log(error)
         res.status(404).json({
-            error: error
+          meesage:"internal error"
         })
     }
 }
