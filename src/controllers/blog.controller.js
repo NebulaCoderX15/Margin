@@ -27,11 +27,16 @@ async function createblog(req,res){
 
 async function getallblog(req,res)
 {
+    const page= parseInt(req.query.page)||1;
+    const limit = parseInt(req.query.limit)||10;
+    const skip = (page-1)*limit;
 
-    const blog = await Blog.find();
+   const blog = await Blog.find().skip(skip).limit(limit);
 
     res.status(200).json({
         message:"here are the blogs",
+        page,
+        limit,
         blogs:blog
     })
 }
