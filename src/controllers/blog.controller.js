@@ -98,4 +98,40 @@ async function updateblog(req,res){
     }
 }
 
-export default {createblog,getallblog,getblog,updateblog};
+
+async function deleteblog(req,res) {
+    try {
+        const blog = await Blog.findById(
+            req.params.id
+        );
+
+        if(!blog){
+            return res.status(404).json({
+                message:"blog does not exist"
+            });
+        }
+
+        if(req.user.id.toString() !==blog.author.toString()){
+            return res.status(400).json({
+                message:"Not authorised"
+            });
+        }
+
+        await Blog.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            message:"deleted",
+          
+        });
+        
+    } catch (error) {
+        console.log(error)
+
+        res.status(400).json({
+            message:"internal fault"
+        })
+    }
+    
+}
+
+export default {createblog,getallblog,getblog,updateblog,deleteblog};

@@ -10,6 +10,7 @@ router3.post('/create',authMiddleware,blogcontroller.createblog);
 router3.get('/getall',blogcontroller.getallblog);
 router3.get('/getblog/:id',blogcontroller.getblog);
 router3.patch('/updateblog/:id',authMiddleware,blogcontroller.updateblog);
+router3.delete('/deleteblog/:id',authMiddleware,blogcontroller.deleteblog);
 
 
 
