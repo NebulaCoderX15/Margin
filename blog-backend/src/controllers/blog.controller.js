@@ -85,7 +85,7 @@ async function updateblog(req,res){
          {   title:req.body.title,
             content:req.body.content},
             {
-    new: true,
+    returnDocument: 'after',
     runValidators: true
 }
         );

@@ -1,6 +1,6 @@
 import User from '../models/auth.model.js'
 import bcrypt from 'bcrypt'
-import jwt from    'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 async function login(req, res) {
     const { username, email, password } = req.body;
@@ -33,15 +33,15 @@ async function login(req, res) {
             });
         }
 
-          const token = jwt.sign({
-              id:user._id,
-              role:user.role
-        
-            },process.env.JWT_SECRET);
-        
-            res.cookie("token", token);
+        const token = jwt.sign({
+            id: user._id,
+            role: user.role
 
-       
+        }, process.env.JWT_SECRET);
+
+        res.cookie("token", token);
+
+
 
         return res.status(200).json({
             message: 'login done',
@@ -60,4 +60,17 @@ async function login(req, res) {
     }
 }
 
-export default login;
+async function logout(req, res) {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+    });
+    
+       return res.status(200).json({
+        message: "Logged out successfully"
+    });
+}
+
+export default { login, logout };
