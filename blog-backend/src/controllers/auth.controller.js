@@ -14,7 +14,7 @@ async function register(req,res){
      });
 
      if(result){
-        return res.status(402).json({
+        return res.status(400).json({
             message:"user exist "
         })
      };

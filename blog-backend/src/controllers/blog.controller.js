@@ -15,7 +15,7 @@ async function createblog(req,res){
     })
 
 
-    res.status(200).json({
+    res.status(201).json({
         message:"blog created",
         title:blog.title,
         author:blog.author,
@@ -75,7 +75,7 @@ async function updateblog(req,res){
         }
 
         if(blog.author.toString()!==req.user.id.toString()){
-             return res.status(401).json({
+             return res.status(403).json({
                 message:"Not authorised"
              })
         }
@@ -89,7 +89,7 @@ async function updateblog(req,res){
     runValidators: true
 }
         );
-        res.status(201).json({
+        res.status(200).json({
             message:"updated",
             blog :update
         })
@@ -97,7 +97,7 @@ async function updateblog(req,res){
 
     } catch (error) {
           console.log(error)
-        res.status(404).json({
+        res.status(500).json({
           meesage:"internal error"
         })
     }
@@ -117,7 +117,7 @@ async function deleteblog(req,res) {
         }
 
         if(req.user.id.toString() !==blog.author.toString()){
-            return res.status(400).json({
+            return res.status(403).json({
                 message:"Not authorised"
             });
         }
@@ -132,7 +132,7 @@ async function deleteblog(req,res) {
     } catch (error) {
         console.log(error)
 
-        res.status(400).json({
+        res.status(500).json({
             message:"internal fault"
         })
     }

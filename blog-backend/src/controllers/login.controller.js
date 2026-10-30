@@ -20,7 +20,7 @@ async function login(req, res) {
         });
 
         if (!user) {
-            return res.status(401).json({
+            return res.status(400).json({
                 message: 'Invalid credentials'
             });
         }
@@ -28,7 +28,7 @@ async function login(req, res) {
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
-            return res.status(401).json({
+            return res.status(400).json({
                 message: 'Invalid credentials'
             });
         }
