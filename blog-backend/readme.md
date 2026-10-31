@@ -21,6 +21,7 @@ This is the backend of a blog website built using **Node.js, Express.js, and Mon
 - Request validation using Mongoose schemas
 - Paginated blog retrieval
 - Logout functionality
+- Account deletion functionality
 
 ## API Endpoints
 
@@ -36,6 +37,7 @@ Base URL: `http://localhost:3000/api/auth`
 | POST | `/create` | Create a blog post |
 | PATCH | `/updateblog/:id` | Update a blog post |
 | DELETE | `/deleteblog/:id` | Delete a blog post |
+| DELETE | `/delete` |Delete a user account |
 
 ### Pagination
 
