@@ -52,4 +52,28 @@ async function register(req,res){
     });
 }
 
-export default register;
+async function deleteacc(req,res){
+    try{
+        const id = req.user.id;
+
+    const result = await User.findByIdAndDelete(
+        id
+    )
+
+    res.status(200).json({
+        message:"account deleted successfully",
+        result
+    })
+    }
+
+    catch(error){
+        console.log(error);
+
+        res.status(500).json({
+            message:"internal error"
+        })
+    }
+    
+}
+
+export default {register,deleteacc};
