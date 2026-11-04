@@ -515,3 +515,25 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 }
 .route-loading { display: flex; min-height: 65vh; align-items: center; justify-content: center; gap: 10px; color: #7c8876; font-size: 11px; }
 .auth-route-loading { min-height: 540px; flex-direction: column; }
+
+
+/* Account menu and delete-account confirmation */
+.profile-menu-wrap { position: relative; }
+.profile-menu-backdrop { position: fixed; inset: 0; z-index: 29; cursor: default; background: transparent; }
+.profile-menu { position: absolute; z-index: 30; top: calc(100% + 10px); right: 0; width: 190px; padding: 6px; border: 1px solid #e6e4dc; border-radius: 13px; background: #fffefa; box-shadow: 0 14px 38px rgba(35, 42, 34, .14); }
+.profile-menu-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 11px; border: 0; border-radius: 8px; background: transparent; color: #39443c; text-align: left; font-size: 13px; font-weight: 650; cursor: pointer; }
+.profile-menu-item:hover { background: #f4f3ed; }
+.profile-menu-danger { color: #ad4937; }
+.profile-menu-danger:hover { background: #fff1ec; }
+.account-dialog-backdrop { position: fixed; z-index: 60; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(24, 29, 25, .42); }
+.account-dialog { width: min(100%, 420px); padding: 28px; border: 1px solid #e8e4da; border-radius: 18px; background: #fffefa; box-shadow: 0 24px 70px rgba(0, 0, 0, .2); }
+.account-dialog-icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 17px; border-radius: 13px; color: #ad4937; background: #fff0eb; }
+.account-dialog h2 { margin: 0; color: #27332b; font-family: Georgia, serif; font-size: 24px; font-weight: 600; }
+.account-dialog p { margin: 10px 0 24px; color: #687168; font-size: 14px; line-height: 1.6; }
+.account-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
+.account-dialog-actions button:disabled { opacity: .6; cursor: not-allowed; }
+@media (max-width: 640px) {
+  .account-dialog { padding: 23px; }
+  .account-dialog-actions { flex-direction: column-reverse; }
+  .account-dialog-actions button { width: 100%; justify-content: center; }
+}

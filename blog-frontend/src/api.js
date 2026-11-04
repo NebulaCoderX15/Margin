@@ -128,6 +128,7 @@ export const api = {
   updateBlog: (id, payload, signal) => request(`/updateblog/${encodeURIComponent(id)}`, { method: 'PATCH', body: payload, signal }),
   deleteBlog: (id, signal) => request(`/deleteblog/${encodeURIComponent(id)}`, { method: 'DELETE', signal }),
   logout: (signal) => request('/logout', { method: 'POST', signal }),
+  deleteAccount: (signal) => request('/delete', { method: 'DELETE', signal }),
 };
 
 export function getBlogId(blog) {

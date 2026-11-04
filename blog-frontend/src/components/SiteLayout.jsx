@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState ,useEffect,useRef} from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { ArrowUpRight, BookOpenText, Menu, PenLine, Sparkles, X } from 'lucide-react';
+import { ArrowUpRight, BookOpenText, ChevronDown, LogOut, Menu, PenLine, Sparkles, Trash2, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useFlash } from '../context/FlashContext.jsx';
+import { api } from '../api.js';
 
 function Brand() {
   return (
@@ -14,16 +15,77 @@ function Brand() {
 }
 
 export default function SiteLayout() {
+
   const { user, signOut } = useAuth();
   const flash = useFlash();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+    useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.profile-menu-wrap')) {
+      setProfileMenuOpen(false);
+    }
+  };
+
+  const handleEscape = (event) => {
+    if (event.key === 'Escape') {
+      setProfileMenuOpen(false);
+    }
+  };
+
+  document.addEventListener('click', handleClickOutside);
+  document.addEventListener('keydown', handleEscape);
+
+  return () => {
+    document.removeEventListener('click', handleClickOutside);
+    document.removeEventListener('keydown', handleEscape);
+  };
+}, []);
+
+const profileRef = useRef(null);
+
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setProfileMenuOpen(false);
+    }
+  }
+
+  document.addEventListener('mousedown', handleClickOutside);
+
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
 
   function handleSignOut() {
     signOut();
     setMobileOpen(false);
+    setProfileMenuOpen(false);
     flash('You’ve signed out. See you again soon.', 'success');
     navigate('/');
+  }
+
+  async function handleDeleteAccount() {
+    if (isDeleting) return;
+    setIsDeleting(true);
+    try {
+      await api.deleteAccount();
+      signOut();
+      setDeleteDialogOpen(false);
+      setProfileMenuOpen(false);
+      setMobileOpen(false);
+      flash('Your account has been deleted.', 'success');
+      navigate('/');
+    } catch (error) {
+      flash(error?.message || 'We couldn’t delete your account. Please try again.', 'error');
+    } finally {
+      setIsDeleting(false);
+    }
   }
 
   const closeMobile = () => setMobileOpen(false);
@@ -53,10 +115,26 @@ export default function SiteLayout() {
             {user ? (
               <>
                 <Link to="/write" className="button button-write"><PenLine size={15} /> Write</Link>
-                <button type="button" className="user-chip" title={`Signed in as ${user.username || user.email}`} onClick={handleSignOut}>
-                  <span className="user-avatar">{(user.username || user.email || 'M').slice(0, 1).toUpperCase()}</span>
-                  <span className="user-chip-name">{user.username || 'Your account'}</span>
-                </button>
+                <div className="profile-menu-wrap"   ref={profileRef}>
+                  <button type="button" className="user-chip" title={`Signed in as ${user.username || user.email}`} aria-haspopup="menu" aria-expanded={profileMenuOpen} onClick={() => setProfileMenuOpen((open) => !open)}>
+                    <span className="user-avatar">{(user.username || user.email || 'M').slice(0, 1).toUpperCase()}</span>
+                    <span className="user-chip-name">{user.username || 'Your account'}</span>
+                    <ChevronDown size={14} />
+                  </button>
+                  {profileMenuOpen && (
+                    <>
+                      <button type="button" className="profile-menu-backdrop" aria-label="Close account menu" onClick={() => setProfileMenuOpen(false)} />
+                      <div className="profile-menu" role="menu">
+                        <button type="button" role="menuitem" className="profile-menu-item profile-menu-danger" onClick={() => { setProfileMenuOpen(false); setDeleteDialogOpen(true); }}>
+                          <Trash2 size={16} /> Delete account
+                        </button>
+                        <button type="button" role="menuitem" className="profile-menu-item" onClick={handleSignOut}>
+                          <LogOut size={16} /> Log out
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
               </>
             ) : (
               <><Link to="/login" className="button button-quiet header-signin">Sign in</Link><Link to="/register" className="button button-dark header-join">Get started <ArrowUpRight size={15} /></Link></>
@@ -68,6 +146,21 @@ export default function SiteLayout() {
         </div>
       </header>
       <main className="site-main min-h-[65vh]"><Outlet /></main>
+      {deleteDialogOpen && (
+        <div className="account-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !isDeleting) setDeleteDialogOpen(false); }}>
+          <section className="account-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-account-title">
+            <div className="account-dialog-icon"><Trash2 size={21} /></div>
+            <h2 id="delete-account-title">Delete your account?</h2>
+            <p>This action can’t be undone. Your account will be permanently deleted.</p>
+            <div className="account-dialog-actions">
+              <button type="button" className="button button-quiet" disabled={isDeleting} onClick={() => setDeleteDialogOpen(false)}>Cancel</button>
+              <button type="button" className="button button-danger" disabled={isDeleting} onClick={handleDeleteAccount}>
+                {isDeleting ? 'Deleting…' : 'Delete account'}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
       <footer className="site-footer border-t">
         <div className="footer-inner">
           <Brand />
