@@ -1,10 +1,12 @@
 # Margin — Blog Frontend
 
-A responsive Vite + React + Tailwind frontend designed for the public `NebulaCoderX15/blog_backend` Express/MongoDB API. It connects to the endpoints currently present in the repository and includes the client states expected from a real blog product: loading, empty feed, errors, sign up, sign in, create, edit, delete, search, pagination, and story detail pages.
+A responsive Vite + React + Tailwind frontend for **Margin**, a blog application powered by the Express.js and MongoDB backend: [NebulaCoderX15/blog_backend](https://github.com/NebulaCoderX15/blog_backend).
+
+The application provides a complete blogging experience with authentication, story creation and management, likes, comments, and an editorial-style reading interface.
 
 ## Run locally
 
-Requirements: Node.js 20.19+ (or a Node version supported by Vite 7) and npm.
+**Requirements:** Node.js 20.19+ (or a Node version supported by Vite 7) and npm.
 
 ```bash
 npm install
@@ -12,48 +14,104 @@ cp .env.example .env
 npm run dev
 ```
 
-In Windows PowerShell, use `Copy-Item .env.example .env` instead of `cp`.
+In Windows PowerShell, use:
 
-Start your backend separately on `http://localhost:3000`. Vite proxies requests starting with `/api` to that backend, so local cookie authentication works without configuring browser CORS for development. Open `http://localhost:5173`.
+```powershell
+Copy-Item .env.example .env
+```
+
+Start your backend separately on `http://localhost:3000`.
+
+Vite proxies requests starting with `/api` to the backend, allowing cookie-based authentication during local development.
+
+Open `http://localhost:5173` in your browser.
 
 ## Features
 
-- Editorial-style landing page with responsive navigation and feed.
-- Blog feed from `GET /api/auth/getall?page=1&limit=9` with load-more pagination and client-side search.
-- Public story detail view and reading-time estimate.
-- Sign up via `POST /api/auth/register` and sign in via `POST /api/auth/login`.
-- Create (`POST /api/auth/create`), edit (`PATCH /api/auth/updateblog/:id`) and delete (`DELETE /api/auth/deleteblog/:id`) stories.
-- Ownership-aware edit/delete controls based on the blog's `author` ID and logged-in user's `id`.
-- Cookie-aware requests (`credentials: include`), timeout handling with visitor-friendly messages, safe API error handling, loading skeletons, empty states, success/error notices, password visibility toggles, and client-side form validation.
-- Responsive layouts, keyboard focus styling, semantic form labels, reduced-motion support, mobile navigation, and a `/` search keyboard shortcut (Escape clears the search).
+### Authentication
+- User registration and login.
+- Cookie-based authentication.
+- Session restoration through the `/me` endpoint.
+- Logout functionality.
+- Protected actions for authenticated users.
+
+### Blog management
+- Editorial-style landing page with responsive navigation.
+- Blog feed with pagination and client-side search.
+- Create, read, update, and delete blog posts.
+- Ownership-aware editing and deletion.
+- Public story detail pages.
+- Reading-time estimates.
+- Author information and publication dates.
+
+### Likes
+- Like and unlike blog posts.
+- Dynamic like count.
+- Visual indication when a user has liked a post.
+- Authentication required for liking stories.
+
+### Comments
+- Add comments to blog posts.
+- Display comments with author information and publication dates.
+- Edit your own comments.
+- Delete your own comments.
+- Live frontend updates after adding, editing, or deleting comments.
+- Character limit of 2,000 characters.
+- Authentication and ownership checks for comment management.
+
+### User experience
+- Responsive layouts for desktop and mobile.
+- Loading skeletons and empty states.
+- Error and success notifications.
+- Form validation.
+- Password visibility toggles.
+- Keyboard focus styling.
+- Reduced-motion support.
+- Mobile navigation.
 
 ## API contract used
 
-All of the current routes are mounted below `/api/auth` in your backend:
+All routes are mounted below `/api/auth` in the backend.
 
 | Frontend action | Method | Endpoint | Body |
 |---|---|---|---|
 | Register | POST | `/register` | `{ username, email, password }` |
 | Sign in | POST | `/login` | `{ username, email, password }` |
-| Sign out (optional backend enhancement) | POST | `/logout` | — |
+| Sign out | POST | `/logout` | — |
 | List stories | GET | `/getall?page=1&limit=9` | — |
 | Story detail | GET | `/getblog/:id` | — |
 | Create story | POST | `/create` | `{ title, content }` |
 | Update story | PATCH | `/updateblog/:id` | `{ title, content }` |
 | Delete story | DELETE | `/deleteblog/:id` | — |
+| Like / unlike story | POST | `/:id/like` | — |
+| Get comments | GET | `/:id/comments` | — |
+| Add comment | POST | `/:id/comments` | `{ content }` |
+| Update comment | PATCH | `/comments/:commentId` | `{ content }` |
+| Delete comment | DELETE | `/comments/:commentId` | — |
 
-Your current `getall` response is expected to include `{ blogs: [...] }`; the detail response `{ blog: ... }`; the login/register responses `{ user: { id, username, email, role } }`. Story content is rendered as plain text, not HTML/Markdown. Images, tags, comments, likes, saved stories, password reset, and admin screens are not included because the backend does not currently provide matching data fields or endpoints.
 
-## Important backend integration notes before production
 
-This frontend is wired to the current API, but the existing backend is still a learning project and needs a few server-side improvements before real users should rely on its authentication:
+## Data models
 
-1. **Session restore and real logout.** The frontend tries `GET /me` on startup and `POST /logout` when signing out. If either optional endpoint is unavailable, the interface stays user-friendly; sign-out happens immediately in the current tab. Add both routes using the example in [`BACKEND_INTEGRATION.md`](./BACKEND_INTEGRATION.md) for reliable session restoration and cookie invalidation.
-2. **Cookie security and JWT expiry.** The current register/login controllers call `res.cookie("token", token)` without explicit cookie options and sign tokens without an expiry. Configure an `httpOnly` cookie, matching clear-cookie options, and an explicit JWT expiry. See the integration guide.
-3. **Error handling and validation.** Validate all inputs in the backend and wrap asynchronous controllers in `try/catch` or an Express async error handler. Do not depend on frontend validation for security.
-4. **Browser deployment.** Local development uses Vite's proxy. For production, prefer serving the frontend and `/api` behind one HTTPS origin. If they must be on separate origins, configure Express CORS with the exact frontend origin and `credentials: true`; the fetch client already includes credentials. Cookie `SameSite`/`Secure` settings must match your deployment topology.
-5. **Author display.** The current list endpoint doesn't populate the author document, so other users' stories show as “Community writer.” To display usernames, populate `author` in the list/detail queries or add author details to your API response.
-6. **Pagination.** The current list endpoint doesn't return a total count or `hasMore` flag, so the frontend detects the end when a returned page has fewer than the requested page size. Adding `total` or `hasMore` to the API response is more robust.
+### User
+Handles user authentication and account information.
+
+### Blog
+Stores blog post information, including:
+- Title
+- Content
+- Author reference
+- Likes (array of User ObjectIds)
+- Creation and update timestamps
+
+### Comment
+Comments are stored in a separate MongoDB collection and reference both the blog post and the user who created them.
+
+Each comment contains:
+- Blog reference
+- User reference
+- Comment content
+- Creation and update timestamps
 
 ## Environment variables
 
@@ -63,13 +121,51 @@ The default `.env.example` value is:
 VITE_API_BASE_URL=/api/auth
 ```
 
-For a separately hosted API, set it to the full API prefix, for example `https://api.example.com/api/auth`, before running the production build. Vite exposes variables prefixed with `VITE_` to browser code, so **never** put `MONGO_URL`, `JWT_SECRET`, an ImageKit private key, or other server-only secrets in this frontend's `.env` file.
+For a separately hosted API, configure the full API prefix, for example:
+
+```env
+VITE_API_BASE_URL=https://your-api-domain.com/api/auth
+```
+
+Vite exposes variables prefixed with `VITE_` to browser code.
+
+**Never put server-side secrets in the frontend environment file**, including:
+- `MONGO_URL`
+- `JWT_SECRET`
+- ImageKit private keys
+- Database credentials
+
+## Important backend integration notes before production
+
+The frontend is integrated with the backend API, but additional server-side improvements are recommended before using the application with real users.
+
+1. **Authentication and sessions:** Implement reliable session restoration and logout. Configure JWT expiration and invalidate sessions appropriately.
+2. **Cookie security:** Use `httpOnly`, `Secure` in production, and appropriate `SameSite` settings. Ensure cookie-clearing options match the login cookie configuration.
+3. **Validation and authorization:** Validate all inputs on the backend. Verify ownership before allowing users to edit or delete blogs and comments.
+4. **Comment and like consistency:** Remove a user's likes and comments when their account or associated blog is deleted, as appropriate.
+5. **Author information:** Populate the author reference in blog queries so usernames are displayed instead of generic author labels.
+6. **Pagination:** Return a total count or `hasMore` flag from the list endpoint for more reliable pagination.
+7. **Error handling:** Use consistent API error responses and handle asynchronous controller errors.
+8. **Deployment:** Prefer serving the frontend and backend API behind one HTTPS origin. If using separate origins, configure Express CORS with the exact frontend origin and `credentials: true`.
 
 ## Build and preview
 
+Create a production build:
+
 ```bash
 npm run build
+```
+
+Preview the production build locally:
+
+```bash
 npm run preview
 ```
 
-The deployable static output is written to `dist/`. Configure the correct public `VITE_API_BASE_URL` before building.
+The deployable static output is generated in the `dist/` directory.
+
+Configure the correct public `VITE_API_BASE_URL` before building for production.
+
+---
+
+**Margin** — A space for thoughts worth keeping.

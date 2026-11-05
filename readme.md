@@ -37,6 +37,8 @@ blog_backend/
 - Search and pagination
 - Responsive user interface
 - Backend and frontend integration through REST APIs
+- Account deletion and logout
+- Comments and likes function
 
 ## Getting Started
 
