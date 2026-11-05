@@ -537,3 +537,47 @@ button:disabled { cursor: not-allowed; opacity: .65; }
   .account-dialog-actions { flex-direction: column-reverse; }
   .account-dialog-actions button { width: 100%; justify-content: center; }
 }
+
+
+/* Likes and comments */
+.engagement-section { max-width: 875px; margin: 48px auto 42px; padding-top: 26px; border-top: 1px solid #e5e5dc; }
+.engagement-actions { display: flex; align-items: center; gap: 18px; margin-bottom: 35px; }
+.like-button { display: inline-flex; align-items: center; gap: 9px; padding: 10px 15px; border: 1px solid #e2e3d9; border-radius: 999px; color: #53634f; background: #fffefa; font-size: 12px; font-weight: 750; cursor: pointer; transition: background .18s ease, color .18s ease, border-color .18s ease; }
+.like-button:hover { border-color: #c6d2bd; background: #f4f7ef; }
+.like-button.is-liked { border-color: #e8c9bf; color: #b65345; background: #fff4f0; }
+.like-button:disabled { opacity: .65; cursor: wait; }
+.like-button span { min-width: 18px; padding-left: 8px; border-left: 1px solid currentColor; text-align: center; }
+.engagement-comment-count { display: inline-flex; align-items: center; gap: 7px; color: #858d80; font-size: 12px; }
+.comments-panel { padding: 27px; border: 1px solid #e6e7dc; border-radius: 16px; background: #fffefa; }
+.comments-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.comments-heading h2 { margin: 7px 0 0; color: #2e3d32; font-family: Georgia, serif; font-size: 27px; font-weight: 500; }
+.comments-heading h2 span { color: #92998d; font-family: inherit; font-size: 18px; }
+.comment-form { padding: 15px; border: 1px solid #e6e7dc; border-radius: 12px; background: #fafaf5; }
+.comment-form textarea { display: block; width: 100%; min-height: 76px; resize: vertical; border: 0; outline: 0; color: #39443c; background: transparent; font: inherit; font-size: 13px; line-height: 1.7; }
+.comment-form textarea::placeholder { color: #a0a69a; }
+.comment-form-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 10px; border-top: 1px solid #e9e9e0; }
+.comment-form-footer > span { color: #a0a69a; font-size: 10px; }
+.comment-form-footer .button { min-height: 36px; padding: 8px 13px; font-size: 10px; }
+.comment-form-footer .button:disabled { opacity: .5; cursor: not-allowed; }
+.comment-signin-prompt { padding: 15px 17px; border: 1px solid #e6e7dc; border-radius: 10px; color: #788174; background: #fafaf5; font-size: 12px; }
+.comment-signin-prompt a { color: #536d48; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.comment-list { margin-top: 22px; }
+.comments-status { margin: 0; padding: 20px 0; color: #969c91; font-size: 12px; text-align: center; }
+.comment-item { display: flex; align-items: flex-start; gap: 12px; padding: 18px 0; border-bottom: 1px solid #eeeee7; }
+.comment-item:last-child { border-bottom: 0; }
+.comment-avatar { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 50%; color: #536c47; background: #e8eddf; font-size: 11px; font-weight: 850; }
+.comment-main { min-width: 0; flex: 1; }
+.comment-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+.comment-meta strong { color: #3c493d; font-size: 11px; }
+.comment-meta time { color: #a0a69a; font-size: 9px; }
+.comment-main > p { margin: 7px 0 0; color: #5f685d; font-size: 12px; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+.comment-delete-button { display: grid; width: 30px; height: 30px; flex: 0 0 30px; place-items: center; border: 0; border-radius: 8px; color: #a36b5e; background: transparent; cursor: pointer; }
+.comment-delete-button:hover { color: #a83f32; background: #fff0eb; }
+.comment-delete-button:disabled { opacity: .5; cursor: wait; }
+@media (max-width: 640px) {
+  .engagement-section { margin: 34px auto; }
+  .comments-panel { padding: 18px 14px; }
+  .comments-heading h2 { font-size: 24px; }
+  .comment-form { padding: 12px; }
+  .engagement-actions { margin-bottom: 24px; }
+}

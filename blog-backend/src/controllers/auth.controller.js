@@ -1,43 +1,45 @@
 import User from '../models/auth.model.js'
+import Blog from '../models/blog.model.js'
+import Comment from '../models/comments.model.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
 
-async function register(req,res){
-    const {username,email, password, role="user"}= req.body;
-    
-     const result = await User.findOne({
-        $or:[
-            {username},
-            {email}
+async function register(req, res) {
+    const { username, email, password, role = "user" } = req.body;
+
+    const result = await User.findOne({
+        $or: [
+            { username },
+            { email }
         ]
-     });
+    });
 
-     if(result){
+    if (result) {
         return res.status(400).json({
-            message:"user exist "
+            message: "user exist "
         })
-     };
+    };
 
 
-    const hash = await bcrypt.hash(password,10);
+    const hash = await bcrypt.hash(password, 10);
 
-    const  user = await User.create({
+    const user = await User.create({
         username,
         email,
-        password:hash,
+        password: hash,
         role
     });
 
     const token = jwt.sign({
-      id:user._id,
-      role:user.role
+        id: user._id,
+        role: user.role
 
-    },process.env.JWT_SECRET);
+    }, process.env.JWT_SECRET);
 
     res.cookie("token", token);
 
-    
+
     res.status(201).json({
         message: "User created successfully",
         user: {
@@ -45,35 +47,46 @@ async function register(req,res){
             username: user.username,
             email: user.email,
             role: user.role
-             
+
 
         },
-        
+
     });
 }
 
-async function deleteacc(req,res){
-    try{
+async function deleteacc(req, res) {
+    try {
         const id = req.user.id;
 
-    const result = await User.findByIdAndDelete(
-        id
-    )
+        const blogs = await Blog.find({ author: id }).select('_id');
 
-    res.status(200).json({
-        message:"account deleted successfully",
-        result
-    })
+        const blogIds = blogs.map(blog => blog._id);
+
+        await Comment.deleteMany({ blog: { $in: blogIds } });
+
+        await Comment.deleteMany({ user: id });
+
+        await Blog.deleteMany({ author: id });
+
+
+        const result = await User.findByIdAndDelete(
+            id
+        )
+
+        res.status(200).json({
+            message: "account deleted successfully",
+            result
+        })
     }
 
-    catch(error){
+    catch (error) {
         console.log(error);
 
         res.status(500).json({
-            message:"internal error"
+            message: "internal error"
         })
     }
-    
+
 }
 
-export default {register,deleteacc};
+export default { register, deleteacc };

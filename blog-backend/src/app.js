@@ -3,6 +3,7 @@ import router from './routes/auth.route.js'
 import cookieParser from 'cookie-parser';
 import router2 from './routes/login.route.js'
 import router3 from './routes/blog.route.js'
+import router4 from './routes/comments.route.js'
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cookieParser());
 app.use('/api/auth',router);
 app.use('/api/auth',router2);
 app.use('/api/auth',router3);
+app.use('/api/auth',router4);
 
 
 

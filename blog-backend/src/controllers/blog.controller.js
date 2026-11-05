@@ -31,7 +31,8 @@ async function getallblog(req,res)
     const limit = parseInt(req.query.limit)||10;
     const skip = (page-1)*limit;
 
-   const blog = await Blog.find().skip(skip).limit(limit);
+   const blog = await Blog.find()
+    .populate('author', 'username').skip(skip).limit(limit);
 
     res.status(200).json({
         message:"here are the blogs",
@@ -46,7 +47,7 @@ async function getblog(req,res){
 
     try{ const blog = await Blog.findById(
       req.params.id
-    )
+    ).populate('author', 'username')
 
     
     res.status(200).json({
@@ -139,4 +140,44 @@ async function deleteblog(req,res) {
     
 }
 
-export default {createblog,getallblog,getblog,updateblog,deleteblog};
+
+export const toggleLike = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const userId = req.user.id;
+
+        const blog = await Blog.findById(id);
+
+        if (!blog) {
+            return res.status(404).json({
+                message: 'Blog not found'
+            });
+        }
+
+        const alreadyLiked = blog.likes.some(
+            (like) => like.toString() === userId.toString()
+        );
+
+        if (alreadyLiked) {
+            blog.likes.pull(userId);
+        } else {
+            blog.likes.addToSet(userId);
+        }
+
+        await blog.save();
+
+        return res.status(200).json({
+            message: alreadyLiked ? 'Like removed' : 'Blog liked',
+            liked: !alreadyLiked,
+            likesCount: blog.likes.length
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
+
+export default {createblog,getallblog,getblog,updateblog,deleteblog,toggleLike};

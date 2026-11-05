@@ -129,6 +129,17 @@ export const api = {
   deleteBlog: (id, signal) => request(`/deleteblog/${encodeURIComponent(id)}`, { method: 'DELETE', signal }),
   logout: (signal) => request('/logout', { method: 'POST', signal }),
   deleteAccount: (signal) => request('/delete', { method: 'DELETE', signal }),
+  toggleLike: (id, signal) => request(`/${encodeURIComponent(id)}/like`, { method: 'POST', signal }),
+  getComments: (id, signal) => request(`/${encodeURIComponent(id)}/comments`, { signal }),
+  addComment: (id, content, signal) => request(`/${encodeURIComponent(id)}/comments`, { method: 'POST', body: { content }, signal }),
+  deleteComment: (commentId, signal) => request(`/comments/${encodeURIComponent(commentId)}`, { method: 'DELETE', signal }),
+
+  updateComment: (commentId, content, signal) =>
+  request(`/comments/${commentId}`, {
+    method: 'PATCH',
+    body: { content },
+    signal
+  }),
 };
 
 export function getBlogId(blog) {
