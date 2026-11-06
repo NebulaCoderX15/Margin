@@ -5,8 +5,6 @@ import {
   ArrowLeft,
   ArrowUpRight,
   Clock3,
-  Copy,
-  Feather,
   Heart,
   MessageCircle,
   PencilLine,
@@ -372,10 +370,10 @@ export default function PostPage() {
   const title = blog?.title || 'Untitled story';
 
   return (
-    <article className="article-page content-wrap">
+    <article className="article-page mx-auto w-[min(1160px,calc(100%-56px))] px-0 pb-12 pt-9 max-sm:w-[calc(100%-32px)]">
 
       {/* TOP BAR */}
-      <div className="article-topline">
+      <div className="article-topline flex items-center justify-between gap-4">
         <Link to="/" className="back-link">
           <ArrowLeft size={15} /> All stories
         </Link>
@@ -390,18 +388,18 @@ export default function PostPage() {
       </div>
 
       {/* ARTICLE HEADER */}
-      <header className="article-header">
+      <header className="article-header mx-auto mb-8 mt-14 max-w-[790px] text-center max-sm:mt-9">
         <div className="article-label">
           <span className="label-dot" /> A MARGIN STORY
         </div>
 
-        <h1>{title}</h1>
+        <h1 className="my-5 break-words font-serif text-[clamp(2.375rem,5.4vw,4.125rem)] font-medium leading-[1.05] tracking-[-0.055em] text-ink">{title}</h1>
 
         <p className="article-deck">
           A thought shared with the Margin reading room.
         </p>
 
-        <div className="article-byline">
+        <div className="article-byline mx-auto mt-7 flex flex-wrap items-center justify-center gap-3">
           <span className="article-author-avatar">
             {authorLabel.slice(0, 1).toUpperCase()}
           </span>
@@ -445,51 +443,12 @@ export default function PostPage() {
         )}
       </header>
 
-      {/* ARTICLE ART */}
-      <div className="article-art">
-        <div className="article-art-label">
-          <span>MARGIN JOURNAL</span>
-          <span>VOL. 01 / FIELD NOTES</span>
-        </div>
-
-        <div className="article-art-heading">
-          Thoughts<br />
-          worth <em>keeping.</em>
-        </div>
-
-        <div className="article-art-symbol">✳</div>
-
-        <div className="article-art-foot">
-          <span>READ WITH AN OPEN MIND</span>
-          <Feather size={16} />
-        </div>
-      </div>
-
-      {/* ARTICLE CONTENT */}
-      <div className="article-layout">
-        <aside className="article-side-note">
-          <span className="side-note-rule" />
-          <span>TAKE YOUR TIME</span>
-
-          <p>Some ideas need a moment to settle.</p>
-
-          <button
-            type="button"
-            className="icon-text-button"
-            onClick={shareStory}
-          >
-            <Copy size={14} /> Copy link
-          </button>
-        </aside>
-
-        <div className="article-content">
-          <div className="article-content-marker">THE STORY</div>
-
-          <div className="article-prose">
+      {/* STORY CONTENT */}
+      <div className="article-layout mx-auto block w-full max-w-[760px] py-2 pb-10">
+        <div className="article-content w-full">
+          <div className="article-prose mt-0 font-serif text-[17px] leading-[1.95] text-ink/85">
             {content.split(/\n{2,}/).map((paragraph, index) =>
-              paragraph.trim() ? (
-                <p key={index}>{paragraph}</p>
-              ) : null
+              paragraph.trim() ? <p key={index}>{paragraph}</p> : null
             )}
           </div>
 
@@ -502,7 +461,6 @@ export default function PostPage() {
           <div className="article-end-note">
             <strong>Thanks for reading.</strong>
             <p>Good thoughts are even better when they’re shared.</p>
-
             <Link to="/" className="text-link">
               Keep exploring <ArrowUpRight size={15} />
             </Link>
@@ -511,7 +469,7 @@ export default function PostPage() {
       </div>
 
       {/* LIKES AND COMMENTS */}
-      <section className="engagement-section" aria-label="Likes and comments">
+      <section className="engagement-section mx-auto mt-10 w-full max-w-[760px]" aria-label="Likes and comments">
 
         <div className="engagement-actions">
           <button
@@ -538,7 +496,7 @@ export default function PostPage() {
           </span>
         </div>
 
-        <div className="comments-panel">
+        <div className="comments-panel mt-6 rounded-2xl border border-line bg-white p-5 shadow-card sm:p-7 dark:border-[#303b33] dark:bg-[#1b241e]">
 
           <div className="comments-heading">
             <div>
@@ -554,7 +512,7 @@ export default function PostPage() {
 
           {/* ADD COMMENT FORM */}
           {user ? (
-            <form className="comment-form" onSubmit={handleAddComment}>
+            <form className="comment-form mt-5 flex flex-col gap-3 rounded-xl border border-line bg-paper p-4 dark:border-[#3b493e] dark:bg-[#202a23]" onSubmit={handleAddComment}>
               <label className="sr-only" htmlFor="new-comment">
                 Write a comment
               </label>
@@ -589,7 +547,7 @@ export default function PostPage() {
           )}
 
           {/* COMMENT LIST */}
-          <div className="comment-list">
+          <div className="comment-list mt-6 divide-y divide-line dark:divide-[#303b33]">
 
             {commentsLoading ? (
               <p className="comments-status">Loading comments…</p>
@@ -612,7 +570,7 @@ export default function PostPage() {
                 const isEditing = editingComment === commentId;
 
                 return (
-                  <article className="comment-item" key={commentId}>
+                  <article className="comment-item flex items-start gap-3 py-5" key={commentId}>
 
                     <div className="comment-avatar">
                       {commentAuthor.slice(0, 1).toUpperCase()}
@@ -716,7 +674,7 @@ export default function PostPage() {
       </section>
 
       {/* BOTTOM NAVIGATION */}
-      <div className="article-bottom-nav">
+      <div className="article-bottom-nav mx-auto mt-10 flex max-w-[760px] flex-wrap items-center justify-between gap-4 border-t border-line py-6 dark:border-[#303b33]">
         <Link to="/" className="button button-outline">
           <ArrowLeft size={15} /> More stories
         </Link>

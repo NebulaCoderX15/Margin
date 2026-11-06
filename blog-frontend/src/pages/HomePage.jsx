@@ -102,7 +102,7 @@ export default function HomePage() {
   const displayedBlogs = showFeatured ? filteredBlogs.filter((blog) => getBlogId(blog) !== getBlogId(featured)) : filteredBlogs;
 
   return (
-    <div className="home-page">
+    <div className="home-page min-w-0">
       <section className="hero-section content-wrap">
         <div className="hero-copy">
           <div className="hero-eyebrow"><span className="hero-eyebrow-dot" /> A JOURNAL FOR CURIOUS MINDS</div>
@@ -110,7 +110,19 @@ export default function HomePage() {
           <p className="hero-description">A quieter corner of the internet for ideas, stories, and the things we learn along the way.</p>
           <div className="hero-actions">
             <a href="#latest" className="button button-dark button-large">Explore stories <ArrowDown size={17} /></a>
-            <Link to={user ? '/write' : '/register'} className="button button-outline button-large"><Feather size={16} /> Write your first story</Link>
+           {!blogs.some(
+  (blog) =>
+    String(blog.author?._id || blog.author) ===
+    String(user?._id || user?.id)
+) && (
+  <Link
+    to={user ? '/write' : '/register'}
+    className="button button-outline button-large"
+  >
+    <Feather size={16} />
+    Write your first story
+  </Link>
+)}
           </div>
           <div className="hero-note"><span className="hero-note-icon"><BookOpenText size={16} /></span><span><strong>Written by people,</strong> for people.</span><span className="hero-note-divider" /><span>No noise. Just ideas.</span></div>
         </div>
@@ -124,7 +136,7 @@ export default function HomePage() {
 
       <section className="marquee-strip" aria-label="Our values"><div className="marquee-track"><span>Curiosity first</span><i>✳</i><span>Write what matters</span><i>✳</i><span>Stay a little longer</span><i>✳</i><span>Curiosity first</span><i>✳</i><span>Write what matters</span><i>✳</i><span>Stay a little longer</span></div></section>
 
-      <section id="latest" className="latest-section content-wrap">
+      <section id="latest" className="latest-section content-wrap mx-auto w-[min(1160px,calc(100%-56px))] py-12 sm:py-16">
         <div className="section-heading-row">
           <div><div className="section-eyebrow"><Sparkles size={14} /> THE READING ROOM</div><h2>Fresh from the <em>margin.</em></h2><p className="section-subtitle">Thoughts in progress. Stories worth your time.</p></div>
           <div className="heading-side-note"><span className="note-line" /><span>Take what<br />resonates.</span></div>
@@ -137,7 +149,7 @@ export default function HomePage() {
           <div className="featured-decoration" aria-hidden="true">✳</div>
         </div>}
 
-        <div className="feed-controls">
+        <div className="feed-controls flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div className="feed-tabs" role="group" aria-label="Story filter">
             <button type="button" aria-pressed={view === 'all'} className={view === 'all' ? 'feed-tab active' : 'feed-tab'} onClick={() => setView('all')}>All stories <span>{blogs.length}</span></button>
             {user && <button type="button" aria-pressed={view === 'mine'} className={view === 'mine' ? 'feed-tab active' : 'feed-tab'} onClick={() => setView('mine')}>Your writing</button>}
@@ -147,7 +159,7 @@ export default function HomePage() {
 
         {loading ? <LoadingGrid count={6} /> : error ? <ErrorState message={error} onRetry={loadFirstPage} /> : displayedBlogs.length ? (
           <>
-            <div className="post-grid">{displayedBlogs.map((blog, index) => <PostCard key={getBlogId(blog) || `${blog.title}-${index}`} blog={blog} index={index} currentUser={user} />)}</div>
+            <div className="post-grid grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">{displayedBlogs.map((blog, index) => <PostCard key={getBlogId(blog) || `${blog.title}-${index}`} blog={blog} index={index} currentUser={user} />)}</div>
             {!query && view === 'all' && hasMore && <div className="load-more-row"><button className="button button-outline button-large" type="button" onClick={loadMore} disabled={loadingMore}>{loadingMore ? 'Loading stories…' : 'Read a little further'} {loadingMore ? <span className="small-spinner" /> : <ArrowRight size={16} />}</button><span>There’s always more to discover.</span></div>}
           </>
         ) : (
@@ -155,7 +167,7 @@ export default function HomePage() {
         )}
       </section>
 
-      <section className="write-cta content-wrap">
+      <section className="write-cta content-wrap mx-auto flex w-[min(1160px,calc(100%-56px))] flex-wrap items-center gap-6 rounded-3xl bg-forest px-6 py-9 text-white sm:px-10">
         <div className="cta-symbol"><PenLine size={25} /></div>
         <div className="cta-copy"><span className="section-eyebrow">YOUR TURN</span><h2>Every good story starts <em>somewhere.</em></h2><p>It doesn’t need to be perfect. It just needs to be yours.</p></div>
         <Link to={user ? '/write' : '/register'} className="button button-lime button-large">Put it into words <ArrowUpRight size={17} /></Link>

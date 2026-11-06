@@ -1,8 +1,9 @@
 import { useState ,useEffect,useRef} from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { ArrowUpRight, BookOpenText, ChevronDown, LogOut, Menu, PenLine, Sparkles, Trash2, X } from 'lucide-react';
+import { ArrowUpRight, BookOpenText, ChevronDown, LogOut, Menu, Moon, PenLine, Sparkles, Sun, Trash2, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useFlash } from '../context/FlashContext.jsx';
+import { useTheme } from '../context/ThemeContext.jsx';
 import { api } from '../api.js';
 
 function Brand() {
@@ -17,6 +18,7 @@ function Brand() {
 export default function SiteLayout() {
 
   const { user, signOut } = useAuth();
+  const { theme, setTheme } = useTheme();
   const flash = useFlash();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -91,8 +93,8 @@ useEffect(() => {
   const closeMobile = () => setMobileOpen(false);
 
   return (
-    <div className="site-shell min-h-screen bg-paper text-ink">
-      <div className="announcement-bar">
+    <div className="site-shell min-h-screen overflow-x-clip bg-paper text-ink transition-colors duration-200 dark:bg-[#111713] dark:text-[#e8eee7]">
+      <div className="announcement-bar flex min-h-[31px] items-center justify-between gap-4 bg-forest px-7 py-1.5 text-[10px] text-[#f2f2e8] sm:px-[max(28px,calc((100%-1160px)/2))]">
         <span><Sparkles size={13} /> A small corner for big thoughts</span>
         <span className="announcement-right">Read slowly. Think deeply. <ArrowUpRight size={13} /></span>
       </div>
@@ -104,6 +106,12 @@ useEffect(() => {
             <a href="/#latest" onClick={closeMobile} className="nav-link">Latest stories</a>
             {user && <NavLink to="/write" onClick={closeMobile} className={({ isActive }) => `nav-link ${isActive ? 'nav-link-active' : ''}`}>Write a story</NavLink>}
             <div className="mobile-nav-actions">
+              <label className="theme-control" title="Choose appearance">
+                {theme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
+                <select aria-label="Color theme" value={theme} onChange={(event) => setTheme(event.target.value)}>
+                  <option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option>
+                </select>
+              </label>
               {user ? (
                 <button className="button button-quiet" type="button" onClick={handleSignOut}>Sign out</button>
               ) : (
@@ -112,6 +120,14 @@ useEffect(() => {
             </div>
           </nav>
           <div className="header-actions">
+            <label className="theme-control" title="Choose appearance">
+              {theme === 'dark' ? <Moon size={15} /> : <Sun size={15} />}
+              <select aria-label="Color theme" value={theme} onChange={(event) => setTheme(event.target.value)}>
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
             {user ? (
               <>
                 <Link to="/write" className="button button-write"><PenLine size={15} /> Write</Link>

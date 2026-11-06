@@ -1,6 +1,5 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
 
 :root {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -13,8 +12,8 @@
   font-optical-sizing: auto;
   font-weight: 400;
   --paper: #f8f7f2;
-  --ink: #1e2924;
-  --forest: #244a3d;
+  --ink: #3dc426;
+  --forest: #42b644;
   --moss: #d8e6c5;
   --lime: #d8f36a;
   --muted: #6e776f;
@@ -143,7 +142,7 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .search-box { display: flex; width: min(285px, 45%); min-height: 42px; align-items: center; gap: 9px; padding: 0 11px; border: 1px solid #e2e2d8; border-radius: 999px; color: #969b90; background: rgba(255,255,255,.5); transition: border .18s, background .18s; }
 .search-box:focus-within { border-color: #aab99a; background: #fff; }
 .search-box input { width: 100%; min-width: 0; border: 0; outline: none; color: var(--ink); background: transparent; font-size: 10px; }
-.search-box input::placeholder { color: #a5a99f; }
+.search-box input::placeholder { color: #8fc53e; }
 .search-box kbd { display: grid; width: 19px; height: 21px; flex: 0 0 19px; place-items: center; border: 1px solid #e1e2d8; border-radius: 5px; color: #9a9f94; background: #fffdf8; font-family: inherit; font-size: 10px; }
 .post-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 23px; }
 .post-card { min-width: 0; overflow: hidden; border: 1px solid #e7e6dd; border-radius: 17px; background: #fffef9; box-shadow: 0 8px 25px -24px rgba(30,41,36,.4); transition: border-color .2s, transform .2s, box-shadow .2s; }
@@ -171,7 +170,7 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .post-card h2 a:hover { color: var(--clay); }
 .post-excerpt { display: -webkit-box; overflow: hidden; min-height: 58px; margin: 0; color: #7c8379; font-size: 10px; line-height: 1.9; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 .post-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 19px; padding-top: 13px; border-top: 1px solid #ecebe3; }
-.author-mini { display: flex; min-width: 0; align-items: center; gap: 7px; color: #737d72; font-size: 9px; }
+.author-mini { display: flex; min-width: 0; align-items: center; gap: 7px; color: #737d72; font-size: 11px; }
 .author-mini > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .author-avatar { display: grid; width: 25px; height: 25px; flex: 0 0 25px; place-items: center; border-radius: 50%; color: #4a6649; background: #e2ebd8; font-size: 9px; font-weight: 800; }
 .reading-time { display: inline-flex; flex-shrink: 0; align-items: center; gap: 5px; color: #92988c; font-size: 9px; }
@@ -330,7 +329,7 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .editor-side-tip { display: flex; align-items: flex-start; gap: 9px; padding: 12px 0; border-bottom: 1px solid #e7e6dd; }
 .editor-side-tip > span { display: grid; width: 22px; height: 22px; flex: 0 0 22px; place-items: center; border-radius: 50%; color: #56784e; background: #e6eddb; }
 .editor-side-tip strong { color: #5b6657; font-size: 9px; }
-.editor-side-tip p { margin: 5px 0 0; color: #8c9388; font-size: 9px; line-height: 1.7; }
+.editor-side-tip p { margin: 5px 0 0; color: #8c9388; font-size: 12px; line-height: 1.7; }
 
 /* State feedback */
 .empty-state, .error-state { display: flex; min-height: 260px; flex-direction: column; align-items: center; justify-content: center; padding: 38px 20px; border: 1px dashed #d9ded0; border-radius: 17px; background: rgba(255,255,255,.24); text-align: center; }
@@ -528,8 +527,8 @@ button:disabled { cursor: not-allowed; opacity: .65; }
 .account-dialog-backdrop { position: fixed; z-index: 60; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(24, 29, 25, .42); }
 .account-dialog { width: min(100%, 420px); padding: 28px; border: 1px solid #e8e4da; border-radius: 18px; background: #fffefa; box-shadow: 0 24px 70px rgba(0, 0, 0, .2); }
 .account-dialog-icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 17px; border-radius: 13px; color: #ad4937; background: #fff0eb; }
-.account-dialog h2 { margin: 0; color: #27332b; font-family: Georgia, serif; font-size: 24px; font-weight: 600; }
-.account-dialog p { margin: 10px 0 24px; color: #687168; font-size: 14px; line-height: 1.6; }
+.account-dialog h2 { margin: 0; color: #609f75; font-family: Georgia, serif; font-size: 24px; font-weight: 600; }
+.account-dialog p { margin: 10px 0 24px; color: #69b369; font-size: 14px; line-height: 1.6; }
 .account-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; }
 .account-dialog-actions button:disabled { opacity: .6; cursor: not-allowed; }
 @media (max-width: 640px) {
@@ -581,3 +580,91 @@ button:disabled { cursor: not-allowed; opacity: .65; }
   .comment-form { padding: 12px; }
   .engagement-actions { margin-bottom: 24px; }
 }
+
+
+/* Theme control uses Tailwind utilities; legacy page styles inherit these theme tokens. */
+.theme-control { @apply inline-flex min-h-9 items-center gap-2 rounded-full border border-line bg-white/60 px-3 text-xs font-semibold text-muted transition-colors; }
+.theme-control:focus-within { @apply border-forest; }
+.theme-control select { @apply max-w-[88px] cursor-pointer border-0 bg-transparent py-1 text-xs font-semibold text-current outline-none; }
+.theme-control option { color: #1e2924; background: #ffffff; }
+
+html.dark {
+  color-scheme: dark;
+  --paper: #111713;
+  --ink: #62ca50;
+  --forest: #4aaf46;
+  --moss: #29382c;
+  --lime: #c5e879;
+  --muted: #a0ada1;
+  --line: #303b33;
+  --clay: #e08a69;
+  background: var(--paper);
+  color: var(--ink);
+}
+html.dark body, html.dark .site-shell { background: var(--paper); color: var(--ink); }
+html.dark .site-header { border-color: var(--line); background: rgba(17,23,19,.94); }
+html.dark .announcement-bar { background: #1b2a20; }
+html.dark .nav-link, html.dark .button-quiet, html.dark .footer-inner p,
+html.dark .footer-inner > span, html.dark .hero-description, html.dark .hero-note,
+html.dark .article-deck, html.dark .article-byline-text span,
+html.dark .back-link, html.dark .article-share-button { color: #a5b0a4; }
+html.dark .nav-link:hover, html.dark .nav-link-active, html.dark .brand,
+html.dark .article-header h1, html.dark .article-byline-text strong { color: var(--ink); }
+html.dark .site-footer { border-color: var(--line); background: #171f19; }
+html.dark .button-outline, html.dark .button-write, html.dark .user-chip,
+html.dark .article-share-button, html.dark .mobile-menu-button { border-color: #3a493d; color: var(--ink); background: #202b23; }
+html.dark .button-quiet:hover { color: var(--ink); background: #29352c; }
+html.dark .button-dark { color: #152018; background: #c5e879; }
+html.dark .button-dark:hover { background: #d4f294; }
+html.dark .button-danger { border-color: #62423b; color: #f0a18b; background: #30211e; }
+html.dark .hero-eyebrow, html.dark .hero-note-icon, html.dark .hero-art-paper,
+html.dark .paper-front { border-color: #39463a; background: #26352a; }
+html.dark .paper-back { background: #89523f; }
+html.dark .paper-title, html.dark .hero-copy h1 span, html.dark .hero-note strong { color: #dce9d3; }
+html.dark .hero-copy h1 { color: var(--ink); }
+html.dark .post-card, html.dark .post-cover, html.dark .auth-page,
+html.dark .auth-form-panel, html.dark .editor-panel, html.dark .editor-sidebar,
+html.dark .article-end-note, html.dark .comments-panel, html.dark .comment-form,
+html.dark .comment-signin-prompt, html.dark .account-dialog { border-color: var(--line); background: #1b241e; color: var(--ink); }
+html.dark .post-card h2, html.dark .post-card h3, html.dark .article-prose,
+html.dark .comment-meta strong, html.dark .comment-main > p,
+html.dark .article-end-note strong, html.dark .comments-heading h2,
+html.dark .auth-heading h2, html.dark .editor-heading h1 { color: #e1e9df; }
+html.dark .post-card p, html.dark .comment-form textarea, html.dark .auth-form-panel label,
+html.dark .editor-panel label { color: #b0bcb0; }
+html.dark input, html.dark textarea, html.dark select,
+html.dark .comment-form textarea, html.dark .editor-panel input,
+html.dark .editor-panel textarea { border-color: #3b493e; color: var(--ink);  }
+html.dark .comment-form textarea::placeholder { color: #5bb061; }
+html.dark .comment-form-footer, html.dark .comment-item, html.dark .article-bottom-nav { border-color: var(--line); }
+html.dark .comment-avatar, html.dark .article-author-avatar, html.dark .user-avatar { color: #d6e7cf; background: #344735; }
+html.dark .comment-delete-button:hover { background: #3a2824; }
+html.dark .article-prose p:first-child::first-letter { color: #a9c6a8; }
+html.dark .article-end-mark span:first-child, html.dark .article-end-mark span:last-child { background: var(--line); }
+html.dark .text-link, html.dark .comment-signin-prompt a { color: #c5e879; }
+html.dark .main-nav { background: #151d18; border-color: var(--line); }
+html.dark .profile-menu, html.dark .profile-menu-backdrop + .profile-menu { border-color: var(--line); background: #202a23; }
+html.dark .profile-menu-item { color:#a83f32; }
+html.dark .account-dialog-backdrop { background: rgba(0,0,0,.68); }
+html.dark .theme-control { border-color: #3a493d; background: #202b23; color: var(--ink); }
+html.dark .skeleton { background: linear-gradient(90deg, #202a23, #2b382e, #202a23); }
+
+/* Tailwind-first shared primitives */
+@layer components {
+  .content-wrap { @apply mx-auto w-[min(1160px,calc(100%-56px))]; }
+  .button { @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-transparent px-4 py-2.5 text-[11px] font-bold transition duration-200 hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-60; }
+  .button-dark { @apply bg-ink text-white shadow-sm hover:bg-forest dark:bg-lime dark:text-ink dark:hover:bg-[#d4f294]; }
+  .button-outline { @apply border-line bg-white/30 text-ink hover:border-forest hover:bg-white dark:border-[#3a493d] dark:bg-[#202b23] dark:text-ink; }
+  .button-danger { @apply border-red-200 bg-red-50 text-red-700 hover:bg-red-100 dark:border-[#62423b] dark:bg-[#30211e] dark:text-[#f0a18b]; }
+  .site-main { @apply min-h-[65vh]; }
+}
+
+/* The story itself now follows the title directly, without the decorative journal panel/sidebar. */
+.article-layout { display: block; max-width: 760px; margin: 0 auto; padding: 8px 0 38px; }
+.article-content { width: 100%; }
+.article-prose { margin-top: 0; }
+@media (max-width: 760px) { .article-layout { padding-top: 4px; } }
+
+
+/* Tailwind utilities are emitted after retained decorative rules so page-level utilities take precedence. */
+@tailwind utilities;
