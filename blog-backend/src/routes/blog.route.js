@@ -11,7 +11,7 @@ router3.get('/getall',blogcontroller.getallblog);
 router3.get('/getblog/:id',blogcontroller.getblog);
 router3.patch('/updateblog/:id',authMiddleware,blogcontroller.updateblog);
 router3.delete('/deleteblog/:id',authMiddleware,blogcontroller.deleteblog);
-router3.post('/:id/like', authMiddleware, authMiddleware,blogcontroller.toggleLike);
+router3.post('/:id/like', authMiddleware, blogcontroller.toggleLike);
 
 
 

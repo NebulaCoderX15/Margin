@@ -141,7 +141,7 @@ async function deleteblog(req,res) {
 }
 
 
-export const toggleLike = async (req, res) => {
+ async function toggleLike(req, res) {
     try {
         const { id } = req.params;
         const userId = req.user.id;
